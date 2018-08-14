@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>File upload</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        #mainPanel {
+            height: 600px;
+            width: 900px;
+            position: absolute;
+        }
+        #photoPreview {
+            height: 500px;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function() {
+            resizePanel();
+        }
+        window.onresize = function() {
+            resizePanel();
+        }
+        function resizePanel() {
+            var mainPanel = document.getElementById("mainPanel");
+            var style = getComputedStyle(mainPanel);
+            mainPanel.style.top = ((window.outerHeight - parseInt(style.height))/2) + "px";
+            mainPanel.style.left = ((window.outerWidth - parseInt(style.width,10))/2) + "px";
+        }
+        function uploadFile(input) {
+            var imageFile = input.files[0];
+            var img = document.createElement("img");
+            img.src = window.URL.createObjectURL(imageFile);
+            img.onload = function() {
+                window.URL.revokeObjectURL(imageFile);
+            }
+            img.style.maxHeight = "100%";
+            img.style.margin = "0 auto";
+            img.style.display = "block";
+            document.getElementById("photoPreview").append(img);
+        }
+    </script>
+</head>
+<body style="position : relative">
+    <div class="panel panel-primary" id="mainPanel">
+        <div class="panel-heading">File upload</div>
+        <div class="panel-body">
+            <form enctype="multipart/form-data">
+                <input type="file" name="photo" class="form-control" id="photo" onchange="uploadFile(this)">
+            </form>
+            <div id="photoPreview"></div>
+        </div>
+    </div>
+</body>
+</html>
